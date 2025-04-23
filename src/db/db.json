@@ -1,0 +1,19 @@
+{
+  "todos": [
+    {
+      "id": "7711",
+      "text": "사과, 바나나",
+      "completed": "O"
+    },
+    {
+      "id": "530c",
+      "text": "PNU",
+      "completed": "O"
+    },
+    {
+      "id": "62f1",
+      "text": "사과, 바나나",
+      "completed": "O"
+    }
+  ]
+}
