@@ -3,45 +3,61 @@ import { useRef } from "react"
 import { useAtom } from "jotai";
 import { isLogin } from "../atoms/IsLoginAtom";
 import { useRouter } from "next/navigation";
-import { MouseEvent } from "react";
+import { MouseEvent } from "react"; 
+import axios from "axios";
 
+const baseurl = "http://localhost:3000/api/user"
+ 
 export default function Login() {
   const [, setLogin] = useAtom(isLogin) ;
   const emailRef = useRef<HTMLInputElement>(null) ;
   const pwdRef = useRef<HTMLInputElement>(null) ;
 
   const router = useRouter();
-
-  const handleOk = (e:MouseEvent<HTMLButtonElement>) => {
+ 
+   
+  const handleOk = async (e:MouseEvent<HTMLButtonElement>) => {
       e.preventDefault(); 
+      const email = emailRef.current?.value || '' ;
+      const pwd = pwdRef.current?.value || '' ;
 
-      if ( emailRef.current?.value == '') {
+      if ( email == '') {
         alert("이메일을 입력하세요.");
         emailRef.current?.focus() ;
         return ;
       }
 
-      if ( pwdRef.current?.value == '') {
+      if ( pwd  == '') {
         alert("비밀번호를 입력하세요.");
         pwdRef.current?.focus() ;
         return ;
       }
 
-      if ( emailRef.current?.value != 'pnumin@pusan.ac.kr') {
-        alert("해당 이메일이 존재하지 않습니다.");
-        emailRef.current?.focus() ;
-        return ;
-      }
+      try {
+        const response = await axios.get(`${baseurl}?id=${email}`);
+        const user = response.data ;
 
-      if ( pwdRef.current?.value != '1234') {
-        alert("비밀번호 오류입니다.");
-        pwdRef.current?.focus() ;
-        return ;
-      }
+        if (!user) {
+          alert("사용자가 존재하지 않습니다.")
+          return;
+        }
 
-      localStorage.setItem("email", emailRef.current.value ) ;
-      setLogin(true) ;
-      router.push('/') ;
+        if (user.pwd !== pwd) {
+          alert("비밀번호가 일치하지 않습니다.") ;
+          return ;
+        }
+
+        localStorage.setItem("email", email );
+        setLogin(true);
+        window.location.reload();
+      } catch ( err : any) {
+        if (err.response?.status === 404) {
+          alert('존재하지 않는 사용자입니다.');
+        } else {
+          alert('로그인 중 오류가 발생했습니다.');
+        }
+        return;
+      }
   }
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
