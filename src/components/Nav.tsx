@@ -40,6 +40,9 @@ export default function Nav() {
         <li className='mx-1 p-2 rounded-sm hover:bg-lime-50 hover:text-lime-700'>
           <Link href="/productlist2">상품목록2</Link>
         </li>
+        <li className='mx-1 p-2 rounded-sm hover:bg-lime-50 hover:text-lime-700'>
+          <Link href="/productlist3">상품목록3</Link>
+        </li>
         {/*
         {login &&
           <li className='mx-1 p-2 rounded-sm hover:bg-lime-50 hover:text-lime-700'>
