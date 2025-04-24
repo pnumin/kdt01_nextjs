@@ -3,7 +3,7 @@ import { Product, products } from "@/types/product"
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default async function Products() {
+export default function Products() {
   const searchParams = useSearchParams() ;
 
   const id = searchParams.get("id");
